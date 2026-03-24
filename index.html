@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amasa Cocktail Prep</title>
+<style>
+:root{
+  --bg-top:#f6efe4;
+  --bg-bottom:#dbe8e4;
+  --surface:#fffdf8;
+  --surface-strong:#fffaf1;
+  --text:#182126;
+  --muted:#5f6a70;
+  --border:#d8d1c5;
+  --accent:#b4552d;
+  --accent-dark:#8e411f;
+  --accent-soft:#f4d5c8;
+  --correct:#d7f0dc;
+  --correct-border:#5b9a68;
+  --wrong:#f9d8d3;
+  --wrong-border:#bf5d50;
+  --shadow:0 18px 45px rgba(24,33,38,0.12);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Georgia, "Times New Roman", serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.75), transparent 30%),
+    linear-gradient(160deg, var(--bg-top), var(--bg-bottom));
+  padding:24px;
+}
+.lock-screen{
+  min-height:calc(100vh - 48px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lock-card{
+  width:min(100%,460px);
+  background:rgba(255,253,248,0.92);
+  border:1px solid rgba(255,255,255,0.72);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+  padding:28px;
+  text-align:center;
+}
+.lock-card h2{margin:0 0 10px;font-size:1.5rem;line-height:1.15;}
+.lock-card p{margin:0 0 16px;color:var(--muted);font:400 1rem/1.6 Arial, sans-serif;}
+.lock-form{display:grid;gap:12px;}
+.lock-input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  font:400 1rem/1.2 Arial, sans-serif;
+}
+.lock-input:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(180,85,45,0.12);
+}
+.lock-error{
+  min-height:1.3em;
+  margin:0;
+  color:var(--accent-dark);
+  font:600 0.92rem/1.4 Arial, sans-serif;
+}
+.hidden{display:none !important;}
+.shell{max-width:1080px;margin:0 auto;padding-bottom:120px;}
+.hero, .card{
+  background:rgba(255,253,248,0.82);
+  border:1px solid rgba(255,255,255,0.65);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+.hero{padding:24px;margin-bottom:22px;}
+.eyebrow{
+  display:inline-block;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  font:600 12px/1.2 Arial, sans-serif;
+  color:var(--accent-dark);
+  background:var(--accent-soft);
+  padding:7px 10px;
+  border-radius:999px;
+  margin-bottom:14px;
+}
+h1{margin:0 0 10px;font-size:clamp(2.1rem,4.8vw,3.5rem);line-height:0.98;}
+.title-version{
+  font-size:0.46em;
+  font-weight:600;
+  color:var(--accent-dark);
+  vertical-align:top;
+  margin-left:10px;
+}
+.subtitle{margin:0;color:var(--muted);font:400 1rem/1.6 Arial, sans-serif;max-width:720px;}
+.credit{
+  margin:12px 0 0;
+  color:var(--accent);
+  font:700 0.9rem/1.4 Arial, sans-serif;
+}
+.topbar{
+  display:grid;
+  grid-template-columns:auto 1fr auto auto;
+  gap:12px;
+  margin-top:20px;
+  align-items:center;
+}
+.button{
+  border:none;
+  border-radius:999px;
+  padding:12px 16px;
+  cursor:pointer;
+  font:600 0.95rem/1 Arial, sans-serif;
+  transition:transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.button:hover{transform:translateY(-1px);}
+.button.primary{background:var(--accent);color:#fff;box-shadow:0 10px 24px rgba(180,85,45,0.22);}
+.button.primary:hover{background:var(--accent-dark);}
+.button.secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+.button.secondary:hover{background:var(--surface-strong);}
+.drink-select{
+  width:100%;
+  min-width:0;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  font:600 0.95rem/1.2 Arial, sans-serif;
+  padding:12px 14px;
+}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:22px;align-items:start;}
+.panel, .card{padding:22px;}
+.panel{
+  background:rgba(255,253,248,0.72);
+  border:1px solid rgba(255,255,255,0.62);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+.panel-title{
+  margin:0 0 14px;
+  font:700 0.95rem/1.2 Arial, sans-serif;
+  color:var(--accent-dark);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.drink-list{display:grid;gap:8px;max-height:68vh;overflow:auto;padding-right:4px;}
+.drink-item{
+  width:100%;
+  text-align:left;
+  padding:12px 14px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  color:var(--text);
+  font:600 0.94rem/1.3 Arial, sans-serif;
+}
+.drink-item:hover{background:var(--surface-strong);}
+.drink-item.active{border-color:var(--accent);background:#f7e7df;}
+.drink-item.completed{border-color:#95b89b;background:#eff8f1;}
+.drink-item .meta{display:block;margin-top:4px;color:var(--muted);font:400 0.82rem/1.3 Arial, sans-serif;}
+.card-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px;}
+.card-side{display:grid;gap:10px;justify-items:end;}
+.mode-toggle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--accent-dark);
+  font:700 0.82rem/1.2 Arial, sans-serif;
+  letter-spacing:0.04em;
+}
+.mode-toggle input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.mode-switch{
+  position:relative;
+  width:52px;
+  height:30px;
+  border-radius:999px;
+  background:#e9dfd0;
+  border:1px solid var(--border);
+  transition:background 0.18s ease, border-color 0.18s ease;
+}
+.mode-switch::after{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:3px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#fffdf8;
+  box-shadow:0 2px 8px rgba(24,33,38,0.16);
+  transition:transform 0.18s ease;
+}
+.mode-toggle input:checked + .mode-switch{
+  background:var(--accent-soft);
+  border-color:rgba(180,85,45,0.45);
+}
+.mode-toggle input:checked + .mode-switch::after{
+  transform:translateX(22px);
+}
+.mode-copy{
+  color:var(--text);
+  font:600 0.9rem/1.35 Arial, sans-serif;
+  letter-spacing:0;
+}
+.card-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+.card-number{color:var(--accent-dark);font:700 0.82rem/1.2 Arial, sans-serif;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
+.card h2{margin:0;font-size:1.7rem;line-height:1.08;}
+.description{margin:10px 0 0;color:#314047;font:500 1.06rem/1.65 Arial, sans-serif;}
+.progress-pill{
+  white-space:nowrap;
+  padding:9px 12px;
+  border-radius:999px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  font:700 0.82rem/1 Arial, sans-serif;
+  color:var(--accent-dark);
+}
+.section-grid{display:grid;gap:16px;}
+.field-card{
+  border:1px solid var(--border);
+  background:rgba(255,255,255,0.45);
+  border-radius:20px;
+  padding:16px;
+}
+.field-card.correct{background:var(--correct);border-color:var(--correct-border);}
+.field-card.wrong{background:var(--wrong);border-color:var(--wrong-border);}
+.field-label{margin:0 0 10px;font:700 0.9rem/1.2 Arial, sans-serif;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent-dark);}
+.field-select, .spec-select{
+  width:100%;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  padding:12px 13px;
+  font:600 0.95rem/1.3 Arial, sans-serif;
+}
+.field-select:disabled, .spec-select:disabled{opacity:1;color:#17361d;background:rgba(255,255,255,0.7);}
+.specs-wrap{display:grid;gap:12px;}
+.spec-row{
+  display:grid;
+  grid-template-columns:minmax(140px, 190px) minmax(280px, 1fr);
+  gap:10px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#f6f0e8;
+  align-items:start;
+}
+.spec-heading{
+  grid-column:1 / -1;
+  margin:0;
+  color:var(--accent-dark);
+  font:700 0.82rem/1.2 Arial, sans-serif;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.amount-select{min-width:0;}
+.ingredient-select{min-width:0;}
+.spec-row.correct{background:var(--correct);border-color:var(--correct-border);}
+.spec-row.wrong{background:var(--wrong);border-color:var(--wrong-border);}
+.bottom-toast{
+  position:fixed;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  width:min(720px, calc(100vw - 24px));
+  background:rgba(255,253,248,0.96);
+  border:1px solid rgba(255,255,255,0.82);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:16px 18px;
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  z-index:50;
+}
+.bottom-toast.visible{display:flex;}
+.toast-copy{font:700 0.96rem/1.4 Arial, sans-serif;color:#17361d;}
+.toast-actions{display:flex;gap:10px;flex-wrap:wrap;}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .panel{order:2;}
+}
+@media (max-width:700px){
+  body{padding:14px;}
+  .hero, .panel, .card{padding:18px;border-radius:20px;}
+  .topbar{grid-template-columns:1fr 1fr;}
+  .topbar .drink-select{grid-column:1 / -1;}
+  .spec-row{grid-template-columns:1fr;}
+  .card-header{flex-direction:column;}
+  .card-side,.card-actions{justify-items:stretch;justify-content:stretch;width:100%;}
+  .bottom-toast{flex-direction:column;align-items:stretch;}
+}
+</style>
+</head>
+<body>
+<div class="lock-screen hidden" id="lockScreen">
+  <div class="lock-card">
+    <h2>Password Required</h2>
+    <p>This trainer is locked. Use the same password as within the restaurant to continue.</p>
+    <div class="lock-form">
+      <input class="lock-input" type="password" id="passwordInput" placeholder="Password" autocomplete="off">
+      <button class="button primary" type="button" id="unlockButton">Enter</button>
+      <p class="lock-error" id="lockError"></p>
+    </div>
+  </div>
+</div>
+
+<div class="shell hidden" id="appShell">
+  <section class="hero">
+    <span class="eyebrow">Prep Practice</span>
+    <h1>Amasa Cocktail Prep <span class="title-version">v2.1</span></h1>
+    <p class="subtitle">Pick the correct build for each drink. Fields lock once correct.</p>
+    <p class="credit">Made by Felix</p>
+    <div class="topbar">
+      <button class="button secondary" id="prevButton" type="button">← Prev</button>
+      <select class="drink-select" id="drinkSelect" aria-label="Choose drink"></select>
+      <button class="button secondary" id="randomButton" type="button">Random</button>
+      <button class="button primary" id="nextButton" type="button">Next →</button>
+    </div>
+  </section>
+
+  <div class="layout">
+    <aside class="panel">
+      <h2 class="panel-title">Drinks</h2>
+      <div class="drink-list" id="drinkList"></div>
+    </aside>
+
+    <main class="card" id="trainerCard"></main>
+  </div>
+
+</div>
+
+<div class="bottom-toast" id="completionToast">
+  <div class="toast-copy">Recipe complete.</div>
+  <div class="toast-actions">
+    <button class="button secondary" id="toastRandom" type="button">Random drink</button>
+    <button class="button primary" id="toastNext" type="button">Next drink</button>
+  </div>
+</div>
+
+<script>
+const APP_PASSWORD = "NYCDD";
+const appShell = document.getElementById('appShell');
+const lockScreen = document.getElementById('lockScreen');
+const unlockButton = document.getElementById('unlockButton');
+const passwordInput = document.getElementById('passwordInput');
+const lockError = document.getElementById('lockError');
+
+function requestAccess(){
+  const enteredPassword = passwordInput.value;
+
+  if(enteredPassword === APP_PASSWORD){
+    lockError.textContent = '';
+    lockScreen.classList.add('hidden');
+    appShell.classList.remove('hidden');
+    return true;
+  }
+
+  lockError.textContent = 'Incorrect password.';
+  passwordInput.value = '';
+  lockScreen.classList.remove('hidden');
+  appShell.classList.add('hidden');
+  passwordInput.focus();
+  return false;
+}
+
+unlockButton.addEventListener('click', requestAccess);
+passwordInput.addEventListener('keydown', (event) => {
+  if(event.key === 'Enter'){
+    requestAccess();
+  }
+});
+lockScreen.classList.remove('hidden');
+passwordInput.focus();
+
+const drinks = [
+  {
+    name:"Hibiscus Margarita",
+    category:"Agave",
+    description:"Floral hibiscus margarita with lime",
+    glass:"Hand-blown rocks",
+    rim:"Tajin",
+    method:"Shaken",
+    specs:[
+      { amount:"2.75 oz", ingredient:"Prebatch: 2 oz Hibiscus tequila + 0.75 oz Cointreau" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"agave" }
+    ],
+    garnish:"Dehydrated lime"
+  },
+  {
+    name:"Mezcal Negroni",
+    category:"Agave",
+    description:"Smoky bitter Negroni swapping gin for mezcal",
+    glass:"Large rocks",
+    rim:"No rim",
+    method:"Stirred",
+    specs:[
+      { amount:"3 oz", ingredient:"Prebatch: 1 oz Mezcal + 1 oz Campari + 1 oz sweet vermouth" }
+    ],
+    garnish:"Orange peel"
+  },
+  {
+    name:"Oaxacan Old Fashioned",
+    category:"Agave",
+    description:"Smoky mezcal Old Fashioned with warm spice",
+    glass:"Large rocks",
+    rim:"No rim",
+    method:"Stirred",
+    specs:[
+      { amount:"2 oz", ingredient:"mezcal or rum" },
+      { amount:"0.25 oz", ingredient:"piloncillo syrup" },
+      { amount:"2 ds", ingredient:"Angostura bitters" },
+      { amount:"2 ds", ingredient:"chocolate bitters" }
+    ],
+    garnish:"Orange peel"
+  },
+  {
+    name:"Spicy Paloma",
+    category:"Agave",
+    description:"Spicy grapefruit tequila spritz",
+    glass:"Highball",
+    rim:"Tajin",
+    method:"Shaken",
+    specs:[
+      { amount:"2 oz", ingredient:"tequila" },
+      { amount:"1 oz", ingredient:"grapefruit" },
+      { amount:"0.5 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"agave" },
+      { amount:"2-4 drops", ingredient:"fire tincture" },
+      { amount:"Top", ingredient:"grapefruit soda" }
+    ],
+    garnish:"Dehydrated grapefruit"
+  },
+  {
+    name:"Michelada",
+    category:"Agave",
+    description:"Spicy tangy Mexican Bloody Mary with beer",
+    glass:"Highball",
+    rim:"Tajin",
+    method:"Build in glass",
+    specs:[
+      { amount:"12 oz", ingredient:"Tecate" },
+      { amount:"2-3 oz", ingredient:"Michelada mix" }
+    ],
+    garnish:"Lime wheel"
+  },
+  {
+    name:"Amasa & Agave",
+    category:"Agave",
+    description:"Smoky creamy pineapple agave cocktail with chilli",
+    glass:"Hand-blown rocks",
+    rim:"Tajin",
+    method:"Shaken",
+    specs:[
+      { amount:"1 oz", ingredient:"mezcal" },
+      { amount:"1 oz", ingredient:"tequila" },
+      { amount:"0.75 oz", ingredient:"pineapple" },
+      { amount:"0.5 oz", ingredient:"lime" },
+      { amount:"1 oz", ingredient:"corn milk" },
+      { amount:"0.25 oz", ingredient:"agave" },
+      { amount:"0.25 oz", ingredient:"chilli syrup" }
+    ],
+    garnish:"Dehydrated lime"
+  },
+  {
+    name:"Te Quiero Verde",
+    category:"Agave",
+    description:"Smoky spiked cucumber-ginger green juice",
+    glass:"Highball",
+    rim:"No rim",
+    method:"Shaken",
+    specs:[
+      { amount:"1.5 oz", ingredient:"tequila" },
+      { amount:"0.5 oz", ingredient:"mezcal" },
+      { amount:"1.5 oz", ingredient:"cucumber" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"agave" },
+      { amount:"Top", ingredient:"ginger beer" }
+    ],
+    garnish:"Mint sprig"
+  },
+  {
+    name:"Frozen Margarita",
+    category:"Agave",
+    description:"Frozen margarita with choice of fruit",
+    glass:"Hand-blown rocks",
+    rim:"Tajin",
+    method:"Blended / frozen",
+    specs:[
+      { amount:"2 oz", ingredient:"tequila" },
+      { amount:"0.5 oz", ingredient:"triple sec" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"agave" },
+      { amount:"0.5-1 oz", ingredient:"seasonal flavor" }
+    ],
+    garnish:"Dehydrated lime"
+  },
+  {
+    name:"Whisky Horchata",
+    category:"Non-Agave",
+    description:"Creamy bourbon horchata with lemon and spice",
+    glass:"Highball",
+    rim:"No rim",
+    method:"Shaken",
+    specs:[
+      { amount:"1.5 oz", ingredient:"bourbon" },
+      { amount:"1.5 oz", ingredient:"horchata" },
+      { amount:"0.25-0.5 oz", ingredient:"lemon" },
+      { amount:"0.25 oz", ingredient:"Demerara syrup" },
+      { amount:"2 ds", ingredient:"Angostura bitters" }
+    ],
+    garnish:"Mint sprig"
+  },
+  {
+    name:"Pisco Sour",
+    category:"Non-Agave",
+    description:"Silky citrus sour with frothy top",
+    glass:"Coupe",
+    rim:"No rim",
+    method:"Dry shake, then shake",
+    specs:[
+      { amount:"2 oz", ingredient:"pisco" },
+      { amount:"0.75 oz", ingredient:"lemon/lime" },
+      { amount:"0.75 oz", ingredient:"sugar syrup" },
+      { amount:"0.75 oz", ingredient:"egg white" }
+    ],
+    garnish:"Cinnamon bitters"
+  },
+  {
+    name:"Oaxacan Mistress",
+    category:"Non-Agave",
+    description:"Passionfruit rum cocktail with chilli heat",
+    glass:"Hand-blown rocks",
+    rim:"Tajin",
+    method:"Shaken",
+    specs:[
+      { amount:"2 oz", ingredient:"rum" },
+      { amount:"0.75 oz", ingredient:"passionfruit" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"chilli syrup" }
+    ],
+    garnish:"Dehydrated lime"
+  },
+  {
+    name:"Amasa Sangria",
+    category:"Non-Agave",
+    description:"Fruity house sangria, juicy and easy-drinking",
+    glass:"None",
+    rim:"No rim",
+    method:"Build in pitcher",
+    specs:[
+      { amount:"1 bottle", ingredient:"red wine" },
+      { amount:"1 cup", ingredient:"Grand Marnier, Cointreau, or triple sec" },
+      { amount:"1/2 cup", ingredient:"brandy" },
+      { amount:"1 cup", ingredient:"orange" },
+      { amount:"1 orange", ingredient:"cut into wedges" },
+      { amount:"1 lime", ingredient:"cut into wedges" },
+      { amount:"1 cup", ingredient:"pineapple chunks" },
+      { amount:"24 oz", ingredient:"lemon-lime soda" }
+    ],
+    garnish:"None"
+  },
+  {
+    name:"Dulce de Leche Espresso Martini",
+    category:"Non-Agave",
+    description:"Creamy caramel espresso martini",
+    glass:"Coupe",
+    rim:"No rim",
+    method:"Shaken",
+    specs:[
+      { amount:"2.25 oz", ingredient:"Prebatch: 1.5 oz Vodka + 0.75 oz coffee liqueur" },
+      { amount:"1 oz", ingredient:"espresso" },
+      { amount:"0.5 oz", ingredient:"dulce de leche syrup" }
+    ],
+    garnish:"Coffee beans"
+  },
+  {
+    name:"On the Wagon",
+    category:"Non-Alcoholic",
+    description:"Mexican mule with NA tequila",
+    glass:"Hand-blown rocks",
+    rim:"Black lava salt",
+    method:"Shaken",
+    specs:[
+      { amount:"2 oz", ingredient:"Ritual N/A tequila" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"ginger syrup" },
+      { amount:"Top", ingredient:"ginger beer" }
+    ],
+    garnish:"Mint sprig + dehydrated lime"
+  },
+  {
+    name:"Not Too Spicy",
+    category:"Non-Alcoholic",
+    description:"Jalapeno-spicy margarita sans alcohol",
+    glass:"Large rocks",
+    rim:"Tajin",
+    method:"Shaken",
+    specs:[
+      { amount:"2 oz", ingredient:"Ritual N/A tequila" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"1 oz", ingredient:"agave" },
+      { amount:"1 slice", ingredient:"jalapeno muddled" }
+    ],
+    garnish:"Jalapeno slice"
+  },
+  {
+    name:"El Diablo",
+    category:"Non-Alcoholic",
+    description:"Floral hibiscus-infused mocktail with ginger",
+    glass:"Highball",
+    rim:"No rim",
+    method:"Shaken",
+    specs:[
+      { amount:"2 oz", ingredient:"Hibiscus-infused Ritual N/A tequila" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"0.5 oz", ingredient:"N/A Creme de cassis" },
+      { amount:"Top", ingredient:"ginger beer" }
+    ],
+    garnish:"Lime wedge"
+  },
+  {
+    name:"La Esmerelda",
+    category:"Non-Alcoholic",
+    description:"Cucumber ginger cooler",
+    glass:"Highball",
+    rim:"No rim",
+    method:"Shaken",
+    specs:[
+      { amount:"2 oz", ingredient:"Ritual N/A tequila" },
+      { amount:"1.5 oz", ingredient:"cucumber" },
+      { amount:"0.75 oz", ingredient:"lime" },
+      { amount:"1 oz", ingredient:"agave" },
+      { amount:"Top", ingredient:"ginger beer" },
+      { amount:"Pinch", ingredient:"salt" }
+    ],
+    garnish:"Mint sprig + dehydrated lime"
+  }
+];
+
+function normaliseIngredientName(ingredient){
+  let value = ingredient.trim();
+
+  const directMap = {
+    'lime juice':'lime',
+    'lemon juice':'lemon',
+    'lemon/lime juice':'lemon/lime',
+    'cucumber juice':'cucumber',
+    'orange juice':'orange',
+  };
+
+  const mapped = directMap[value.toLowerCase()];
+  if(mapped) return mapped;
+
+  return value;
+}
+
+function normaliseAmountValue(amount){
+  return amount
+    .replace(/\s*pre-?batch/i, '')
+    .replace(/\bdashes?\b/i, 'ds')
+    .trim();
+}
+
+function normaliseMethodValue(method){
+  return method === 'Shaken, top ginger beer' ? 'Shaken' : method;
+}
+
+function getSpecSortRank(spec){
+  const ingredient = spec.ingredient.toLowerCase();
+  const amount = spec.amount.toLowerCase();
+
+  if(ingredient.startsWith('prebatch:')) return 0;
+  if(ingredient.includes('wine')) return 0;
+  if(ingredient.includes('tequila') || ingredient.includes('mezcal') || ingredient.includes('bourbon') || ingredient.includes('pisco') || ingredient.includes('rum') || ingredient.includes('brandy') || ingredient.includes('triple sec') || ingredient.includes('grand marnier') || ingredient.includes('cointreau') || ingredient.includes('campari') || ingredient.includes('vermouth') || ingredient.includes('liqueur') || ingredient.includes('tecate')) return 0;
+  if(['lime', 'lemon', 'lemon/lime', 'grapefruit', 'pineapple', 'cucumber', 'passionfruit', 'orange', 'espresso', 'horchata', 'corn milk', 'michelada mix', 'egg white'].includes(ingredient)) return 1;
+  if(ingredient.includes('syrup') || ingredient.includes('agave') || ingredient.includes('dulce de leche') || ingredient.includes('creme de cassis') || ingredient.includes('seasonal flavor') || ingredient.includes('cassis')) return 2;
+  if(amount.includes('slice') || amount.includes('orange') || amount.includes('lime') || ingredient.includes('wedge') || ingredient.includes('chunks') || ingredient.includes('muddled')) return 3;
+  if(amount === 'top' || ingredient.includes('ginger beer') || ingredient.includes('grapefruit soda') || ingredient.includes('lemon-lime soda')) return 4;
+  if(ingredient.includes('bitters') || ingredient.includes('tincture') || amount.includes('ds') || amount.includes('drops') || amount === 'pinch' || ingredient === 'salt') return 5;
+  return 6;
+}
+
+function getOrderOperationsSortRank(spec){
+  const category = getSpecCategory(spec);
+  const rankMap = {
+    'Juice / mixer': 0,
+    'Sweetener / modifier': 1,
+    'Spirit / liqueur': 2,
+    'Prebatch': 3,
+    'Top / mixer': 4,
+    'Produce / prep': 5,
+    'Bitters / seasoning': 6,
+    'Wine': 7
+  };
+  return rankMap[category] ?? 8;
+}
+
+function getActiveSpecSortRank(spec){
+  return orderOfOperationsMode ? getOrderOperationsSortRank(spec) : getSpecSortRank(spec);
+}
+
+drinks.forEach((drink) => {
+  drink.method = normaliseMethodValue(drink.method);
+  drink.specs = drink.specs
+    .map((spec) => {
+      const amount = normaliseAmountValue(spec.amount);
+      const ingredient = normaliseIngredientName(spec.ingredient);
+
+      if(spec.amount.toLowerCase().includes('prebatch') || spec.amount.toLowerCase().includes('pre-batch')){
+        return {
+          amount,
+          ingredient: ingredient.startsWith('Prebatch:') ? ingredient : `Prebatch: ${ingredient.charAt(0).toUpperCase()}${ingredient.slice(1)}`
+        };
+      }
+
+      return { amount, ingredient };
+    })
+    .sort((a, b) => getSpecSortRank(a) - getSpecSortRank(b));
+});
+
+const STORAGE_KEY = 'amasa_cocktail_prep_progress_v3';
+const trainerCard = document.getElementById('trainerCard');
+const drinkList = document.getElementById('drinkList');
+const drinkSelect = document.getElementById('drinkSelect');
+const completionToast = document.getElementById('completionToast');
+const prevButton = document.getElementById('prevButton');
+const nextButton = document.getElementById('nextButton');
+const randomButton = document.getElementById('randomButton');
+const toastNext = document.getElementById('toastNext');
+const toastRandom = document.getElementById('toastRandom');
+
+prevButton.innerHTML = '&larr; Prev';
+nextButton.innerHTML = 'Next &rarr;';
+
+const allGlasses = uniqueValues(drinks.map(d => d.glass).concat(['None']));
+const allRims = uniqueValues(drinks.map(d => d.rim).concat(['No rim']));
+const allMethods = uniqueValues(drinks.map(d => d.method));
+const allGarnishes = uniqueValues(drinks.map(d => d.garnish).concat(['None']));
+const allAmounts = uniqueValues(drinks.flatMap(d => d.specs.map(s => s.amount)));
+const allIngredients = uniqueValues(drinks.flatMap(d => d.specs.map(s => s.ingredient)));
+
+let progress = loadProgress();
+let currentIndex = Math.max(0, Math.min(drinks.length - 1, progress.currentIndex || 0));
+let orderOfOperationsMode = false;
+
+function uniqueValues(arr){
+  return [...new Set(arr.filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+}
+
+function shuffle(arr){
+  const copy = [...arr];
+  for(let i = copy.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function loadProgress(){
+  try{
+    localStorage.removeItem(STORAGE_KEY);
+  }catch{}
+  return { completed:{}, currentIndex:0 };
+}
+
+function saveProgress(){
+  progress.currentIndex = currentIndex;
+}
+
+function makeOptions(correctValue, pool, count = 5){
+  const others = shuffle(pool.filter(v => v !== correctValue)).slice(0, Math.max(0, count - 1));
+  return shuffle([correctValue, ...others]);
+}
+
+function getAmountSortValue(amount){
+  const value = amount.toLowerCase().trim();
+  if(value === 'pinch') return 0;
+  if(value.includes('drops')) return 1;
+  if(value.includes('ds')) return 2;
+  if(value.includes('slice')) return 3;
+  if(value.includes('orange')) return 4;
+  if(value.includes('lime')) return 5;
+  if(value === 'top') return 999;
+
+  const rangeMatch = value.match(/^(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)\s/);
+  if(rangeMatch) return Number(rangeMatch[1]);
+
+  const numberMatch = value.match(/^(\d+\/\d+|\d+(?:\.\d+)?)\s/);
+  if(numberMatch){
+    const raw = numberMatch[1];
+    if(raw.includes('/')){
+      const [numerator, denominator] = raw.split('/').map(Number);
+      return denominator ? numerator / denominator : 0;
+    }
+    return Number(raw);
+  }
+
+  return 500;
+}
+
+function sortAmountOptions(options){
+  return [...options].sort((a, b) => {
+    const diff = getAmountSortValue(a) - getAmountSortValue(b);
+    return diff !== 0 ? diff : a.localeCompare(b, undefined, { numeric:true });
+  });
+}
+
+function sortAlphabeticalOptions(options){
+  return [...options].sort((a, b) => a.localeCompare(b, undefined, { numeric:true, sensitivity:'base' }));
+}
+
+function normaliseCategoryLabel(category){
+  const map = {
+    'Prebatch':'Prebatch',
+    'Spirit / liqueur':'Spirit / liqueur',
+    'Juice / mixer':'Juice / mixer',
+    'Sweetener / modifier':'Sweetener / modifier',
+    'Bitters / seasoning':'Bitters / seasoning',
+    'Top / mixer':'Top / mixer',
+    'Produce / prep':'Produce / prep',
+    'Wine':'Wine'
+  };
+  return map[category] || 'Modifier';
+}
+
+function getSpecCategory(spec){
+  const ingredient = spec.ingredient.toLowerCase();
+  const amount = spec.amount.toLowerCase();
+
+  if(ingredient.startsWith('prebatch:')) return 'Prebatch';
+  if(ingredient.includes('wine')) return 'Wine';
+  if(amount === 'top' || ingredient.includes('ginger beer') || ingredient.includes('grapefruit soda') || ingredient.includes('lemon-lime soda')) return 'Top / mixer';
+  if(ingredient.includes('bitters') || ingredient.includes('tincture') || amount.includes('ds') || amount.includes('drops') || amount === 'pinch' || ingredient === 'salt') return 'Bitters / seasoning';
+  if(amount.includes('slice') || amount.includes('orange') || amount.includes('lime') || ingredient.includes('wedge') || ingredient.includes('chunks') || ingredient.includes('muddled')) return 'Produce / prep';
+  if(['lime', 'lemon', 'lemon/lime', 'grapefruit', 'pineapple', 'cucumber', 'passionfruit', 'orange', 'espresso', 'horchata', 'corn milk', 'michelada mix', 'egg white'].includes(ingredient)) return 'Juice / mixer';
+  if(ingredient.includes('syrup') || ingredient.includes('agave') || ingredient.includes('dulce de leche') || ingredient.includes('crème de cassis') || ingredient.includes('seasonal flavor') || ingredient.includes('cassis')) return 'Sweetener / modifier';
+  if(ingredient.includes('tequila') || ingredient.includes('mezcal') || ingredient.includes('bourbon') || ingredient.includes('pisco') || ingredient.includes('rum') || ingredient.includes('brandy') || ingredient.includes('triple sec') || ingredient.includes('grand marnier') || ingredient.includes('cointreau') || ingredient.includes('campari') || ingredient.includes('vermouth') || ingredient.includes('liqueur') || ingredient.includes('tecate')) return 'Spirit / liqueur';
+  return 'Juice / mixer';
+}
+
+function getAmountCategory(spec){
+  const amount = spec.amount.toLowerCase();
+  if(amount === 'top') return 'top';
+  if(amount === 'pinch') return 'seasoning';
+  if(amount.includes('ds') || amount.includes('drops')) return 'bitters';
+  if(amount.includes('slice') || amount.includes('orange') || amount.includes('lime')) return 'produce';
+  if(amount.includes('bottle') || amount.includes('cup')) return 'batch';
+  return 'oz';
+}
+
+function getIngredientPoolForCategory(category){
+  const map = {
+    'Prebatch': [
+      'Prebatch: 2 oz Hibiscus tequila + 0.75 oz Cointreau',
+      'Prebatch: 1 oz Mezcal + 1 oz Campari + 1 oz sweet vermouth',
+      'Prebatch: 1.5 oz Vodka + 0.75 oz coffee liqueur'
+    ],
+    'Spirit / liqueur': [
+      'tequila',
+      'mezcal',
+      'mezcal or rum',
+      'Tecate',
+      'bourbon',
+      'pisco',
+      'rum',
+      'Ritual N/A tequila',
+      'Hibiscus-infused Ritual N/A tequila',
+      'Grand Marnier, Cointreau, or triple sec'
+    ],
+    'Juice / mixer': [
+      'lime',
+      'lime juice',
+      'grapefruit',
+      'Michelada mix',
+      'corn milk',
+      'pineapple',
+      'cucumber juice',
+      'horchata',
+      'lemon juice',
+      'lemon/lime juice',
+      'passionfruit',
+      'orange juice',
+      'espresso',
+      'egg white'
+    ],
+    'Sweetener / modifier': [
+      'agave',
+      'piloncillo syrup',
+      'chilli syrup',
+      'seasonal flavor',
+      'Demerara syrup',
+      'dulce de leche syrup',
+      'ginger syrup',
+      'N/A Crème de cassis',
+      'sugar syrup'
+    ],
+    'Bitters / seasoning': [
+      'fire tincture',
+      'chocolate bitters',
+      'Angostura bitters',
+      'salt'
+    ],
+    'Top / mixer': [
+      'ginger beer',
+      'grapefruit soda',
+      'lemon-lime soda'
+    ],
+    'Produce / prep': [
+      'cut into wedges',
+      'pineapple chunks',
+      'jalapeno muddled'
+    ],
+    'Wine': [
+      'red wine'
+    ]
+  };
+  return map[category] || [];
+}
+
+function getAmountPoolForCategory(category, correctAmount){
+  const kind = getAmountCategory({ amount: correctAmount });
+  const map = {
+    oz: ['0.25 oz', '0.5 oz', '0.75 oz', '1 oz', '1.5 oz', '2 oz', '2.25 oz', '2.75 oz', '12 oz', '24 oz', '0.25-0.5 oz', '0.5-1 oz', '2-3 oz', '3 oz'],
+    bitters: ['2 ds', '2 dashes', '2-4 drops'],
+    top: ['Top'],
+    produce: ['1 slice', '1 orange', '1 lime'],
+    batch: ['1 bottle', '1 cup', '1/2 cup'],
+    seasoning: ['Pinch']
+  };
+  return map[kind] || [correctAmount];
+}
+
+function getSpecCategory(spec){
+  const ingredient = spec.ingredient.toLowerCase();
+  const amount = spec.amount.toLowerCase();
+
+  if(ingredient.startsWith('prebatch:')) return 'Prebatch';
+  if(ingredient.includes('wine')) return 'Wine';
+  if(amount === 'top' || ingredient.includes('ginger beer') || ingredient.includes('grapefruit soda') || ingredient.includes('lemon-lime soda')) return 'Top / mixer';
+  if(ingredient.includes('bitters') || ingredient.includes('tincture') || amount.includes('ds') || amount.includes('drops') || amount === 'pinch' || ingredient === 'salt') return 'Bitters / seasoning';
+  if(amount.includes('slice') || amount.includes('orange') || amount.includes('lime') || ingredient.includes('wedge') || ingredient.includes('chunks') || ingredient.includes('muddled')) return 'Produce / prep';
+  if(['lime', 'lemon', 'lemon/lime', 'grapefruit', 'pineapple', 'cucumber', 'passionfruit', 'orange', 'espresso', 'horchata', 'corn milk', 'michelada mix', 'egg white'].includes(ingredient)) return 'Juice / mixer';
+  if(ingredient.includes('syrup') || ingredient.includes('agave') || ingredient.includes('dulce de leche') || ingredient.includes('creme de cassis') || ingredient.includes('seasonal flavor') || ingredient.includes('cassis')) return 'Sweetener / modifier';
+  if(ingredient.includes('tequila') || ingredient.includes('mezcal') || ingredient.includes('bourbon') || ingredient.includes('pisco') || ingredient.includes('rum') || ingredient.includes('brandy') || ingredient.includes('triple sec') || ingredient.includes('grand marnier') || ingredient.includes('cointreau') || ingredient.includes('campari') || ingredient.includes('vermouth') || ingredient.includes('liqueur') || ingredient.includes('tecate')) return 'Spirit / liqueur';
+  return 'Juice / mixer';
+}
+
+function getAmountCategory(spec){
+  const amount = spec.amount.toLowerCase();
+  if(amount === 'top') return 'top';
+  if(amount === 'pinch') return 'seasoning';
+  if(amount.includes('ds') || amount.includes('drops')) return 'bitters';
+  if(amount.includes('slice') || amount.includes('orange') || amount.includes('lime')) return 'produce';
+  if(amount.includes('bottle') || amount.includes('cup')) return 'batch';
+  return 'oz';
+}
+
+function getIngredientPoolForCategory(category){
+  return uniqueValues(
+    drinks
+      .flatMap((drink) => drink.specs)
+      .filter((spec) => getSpecCategory(spec) === category)
+      .map((spec) => spec.ingredient)
+  );
+}
+
+function getAmountPoolForCategory(category, correctAmount){
+  const kind = getAmountCategory({ amount: correctAmount });
+  const map = {
+    oz: ['0.25 oz', '0.5 oz', '0.75 oz', '1 oz', '1.5 oz', '2 oz', '2.25 oz', '2.75 oz', '12 oz', '24 oz', '0.25-0.5 oz', '0.5-1 oz', '2-3 oz', '3 oz'],
+    bitters: ['2 ds', '2-4 drops'],
+    top: ['Top'],
+    produce: ['1 slice', '1 orange', '1 lime'],
+    batch: ['1 bottle', '1 cup', '1/2 cup'],
+    seasoning: ['Pinch']
+  };
+  return map[kind] || [correctAmount];
+}
+
+function buildDrinkList(){
+  drinkList.innerHTML = '';
+  drinkSelect.innerHTML = '';
+
+  drinks.forEach((drink, index) => {
+    const completed = !!progress.completed[drink.name];
+
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = `${completed ? '✓ ' : ''}${drink.name}`;
+    drinkSelect.appendChild(option);
+
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'drink-item';
+    if(completed) item.classList.add('completed');
+    if(index === currentIndex) item.classList.add('active');
+    item.innerHTML = `${drink.name}<span class="meta">${drink.category}${completed ? ' · complete' : ''}</span>`;
+    item.addEventListener('click', () => {
+      currentIndex = index;
+      render();
+    });
+    drinkList.appendChild(item);
+  });
+
+  drinkSelect.value = String(currentIndex);
+}
+
+function render(){
+  saveProgress();
+  buildDrinkList();
+  drinkSelect.value = String(currentIndex);
+  completionToast.classList.remove('visible');
+
+  const drink = drinks[currentIndex];
+  const state = progress[drink.name] || createDrinkState(drink);
+  progress[drink.name] = state;
+
+  const doneCount = Object.keys(progress.completed).length;
+
+  trainerCard.innerHTML = `
+    <div class="card-header">
+      <div>
+        <div class="card-number">${drink.category}</div>
+        <h2>${drink.name}</h2>
+        <p class="description">${drink.description}</p>
+      </div>
+      <div class="card-side">
+        <div class="progress-pill">${doneCount}/${drinks.length} complete</div>
+        <label class="mode-toggle" for="orderModeToggle">
+          <input type="checkbox" id="orderModeToggle" ${orderOfOperationsMode ? 'checked' : ''}>
+          <span class="mode-switch" aria-hidden="true"></span>
+          <span class="mode-copy">Order of operations mode</span>
+        </label>
+        <div class="card-actions">
+          <button class="button secondary" id="resetDrinkButton" type="button">Reset drink</button>
+          <button class="button secondary" id="resetAllButton" type="button">Reset all drinks</button>
+        </div>
+      </div>
+    </div>
+    <div class="section-grid">
+      <div class="field-card" id="glassCard">
+        <p class="field-label">Glass</p>
+        <select class="field-select" id="glassSelect">
+          <option value="">Select glass</option>
+          ${makeOptions(drink.glass, allGlasses, 5).map(v => `<option value="${escapeHtml(v)}">${v}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="field-card" id="rimCard">
+        <p class="field-label">Rim</p>
+        <select class="field-select" id="rimSelect">
+          <option value="">Select rim</option>
+          ${makeOptions(drink.rim, allRims, 5).map(v => `<option value="${escapeHtml(v)}">${v}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="field-card" id="methodCard">
+        <p class="field-label">Method</p>
+        <select class="field-select" id="methodSelect">
+          <option value="">Select method</option>
+          ${makeOptions(drink.method, allMethods, 5).map(v => `<option value="${escapeHtml(v)}">${v}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="field-card" id="specsCard">
+        <p class="field-label">Specs</p>
+        <div class="specs-wrap" id="specsWrap"></div>
+      </div>
+
+      <div class="field-card" id="garnishCard">
+        <p class="field-label">Garnish</p>
+        <select class="field-select" id="garnishSelect">
+          <option value="">Select garnish</option>
+          ${makeOptions(drink.garnish, allGarnishes, 5).map(v => `<option value="${escapeHtml(v)}">${v}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  `;
+
+  initSingleField(drink, 'glass', 'glassSelect', 'glassCard');
+  initSingleField(drink, 'rim', 'rimSelect', 'rimCard');
+  initSingleField(drink, 'method', 'methodSelect', 'methodCard');
+  initSingleField(drink, 'garnish', 'garnishSelect', 'garnishCard');
+  renderSpecs(drink);
+  document.getElementById('orderModeToggle').addEventListener('change', (event) => {
+    orderOfOperationsMode = event.target.checked;
+    renderSpecs(drink);
+  });
+  document.getElementById('resetDrinkButton').addEventListener('click', resetCurrentDrink);
+  document.getElementById('resetAllButton').addEventListener('click', resetAllDrinks);
+  checkCompletion(drink);
+}
+
+function createDrinkState(drink){
+  return {
+    glass:false,
+    rim:false,
+    method:false,
+    garnish:false,
+    specs: drink.specs.map(() => ({ solved:false, amount:'', ingredient:'', selectedAmount:'', selectedIngredient:'' }))
+  };
+}
+
+function resetCurrentDrink(){
+  const drink = drinks[currentIndex];
+  progress[drink.name] = createDrinkState(drink);
+  delete progress.completed[drink.name];
+  completionToast.classList.remove('visible');
+  render();
+}
+
+function resetAllDrinks(){
+  progress = { completed:{}, currentIndex };
+  completionToast.classList.remove('visible');
+  render();
+}
+
+function initSingleField(drink, key, selectId, cardId){
+  const select = document.getElementById(selectId);
+  const card = document.getElementById(cardId);
+  const state = progress[drink.name];
+
+  if(state[key]){
+    select.value = drink[key];
+    select.disabled = true;
+    card.classList.add('correct');
+  }
+
+  select.addEventListener('change', () => {
+    card.classList.remove('wrong');
+    if(select.value === drink[key]){
+      state[key] = true;
+      select.disabled = true;
+      card.classList.remove('wrong');
+      card.classList.add('correct');
+      saveProgress();
+      checkCompletion(drink);
+    }else if(select.value){
+      card.classList.add('wrong');
+    }
+  });
+}
+
+function renderSpecs(drink){
+  const specsWrap = document.getElementById('specsWrap');
+  const state = progress[drink.name];
+  specsWrap.innerHTML = '';
+
+  const displayRows = drink.specs
+    .map((spec, idx) => ({ spec, idx }))
+    .sort((a, b) => {
+      const diff = getActiveSpecSortRank(a.spec) - getActiveSpecSortRank(b.spec);
+      return diff !== 0 ? diff : a.idx - b.idx;
+    });
+
+  displayRows.forEach(({ spec: correctSpec, idx: sourceIndex }) => {
+    const rowState = state.specs[sourceIndex];
+    const specCategory = getSpecCategory(correctSpec);
+    const amountPool = getAmountPoolForCategory(specCategory, correctSpec.amount);
+    const ingredientPool = getIngredientPoolForCategory(specCategory);
+    const amountOptions = sortAmountOptions(makeOptions(correctSpec.amount, amountPool, 6));
+    const ingredientOptions = sortAlphabeticalOptions(makeOptions(correctSpec.ingredient, ingredientPool, 6));
+
+    const row = document.createElement('div');
+    row.className = 'spec-row';
+    if(rowState.solved) row.classList.add('correct');
+
+    row.innerHTML = `
+      <div class="spec-heading">${escapeHtml(normaliseCategoryLabel(specCategory))}</div>
+      <select class="spec-select amount-select" data-row="${sourceIndex}" ${rowState.solved ? 'disabled' : ''}>
+        <option value="">Select amount</option>
+        ${amountOptions.map(v => `<option value="${escapeHtml(v)}">${v}</option>`).join('')}
+      </select>
+      <select class="spec-select ingredient-select" data-row="${sourceIndex}" ${rowState.solved ? 'disabled' : ''}>
+        <option value="">Select ingredient</option>
+        ${ingredientOptions.map(v => `<option value="${escapeHtml(v)}">${v}</option>`).join('')}
+      </select>
+    `;
+
+    const amountSelect = row.querySelector('.amount-select');
+    const ingredientSelect = row.querySelector('.ingredient-select');
+
+    if(rowState.selectedAmount) amountSelect.value = rowState.selectedAmount;
+    if(rowState.selectedIngredient) ingredientSelect.value = rowState.selectedIngredient;
+
+    if(rowState.solved){
+      amountSelect.value = rowState.amount;
+      ingredientSelect.value = rowState.ingredient;
+      amountSelect.disabled = true;
+      ingredientSelect.disabled = true;
+    }
+
+    function trySolve(){
+      row.classList.remove('wrong');
+      rowState.selectedAmount = amountSelect.value;
+      rowState.selectedIngredient = ingredientSelect.value;
+
+      if(!amountSelect.value || !ingredientSelect.value) return;
+
+      const unsolvedIndices = drink.specs
+        .map((spec, idx) => ({ spec, idx }))
+        .filter(({ idx }) => !state.specs[idx].solved);
+
+      const match = unsolvedIndices.find(({ spec }) => (
+        spec.amount === amountSelect.value && spec.ingredient === ingredientSelect.value
+      ));
+
+      if(match){
+        const targetState = state.specs[match.idx];
+        targetState.solved = true;
+        targetState.amount = match.spec.amount;
+        targetState.ingredient = match.spec.ingredient;
+        targetState.selectedAmount = match.spec.amount;
+        targetState.selectedIngredient = match.spec.ingredient;
+
+        amountSelect.value = match.spec.amount;
+        ingredientSelect.value = match.spec.ingredient;
+        amountSelect.disabled = true;
+        ingredientSelect.disabled = true;
+        row.classList.remove('wrong');
+        row.classList.add('correct');
+        saveProgress();
+        updateSpecsCard(drink);
+        checkCompletion(drink);
+      }else{
+        row.classList.add('wrong');
+      }
+    }
+
+    amountSelect.addEventListener('change', trySolve);
+    ingredientSelect.addEventListener('change', trySolve);
+    specsWrap.appendChild(row);
+  });
+
+  updateSpecsCard(drink);
+}
+
+function updateSpecsCard(drink){
+  const specsCard = document.getElementById('specsCard');
+  const state = progress[drink.name];
+  const allSolved = state.specs.every(s => s.solved);
+  specsCard.classList.remove('wrong');
+  if(allSolved) specsCard.classList.add('correct');
+}
+
+function checkCompletion(drink){
+  const state = progress[drink.name];
+  const done = state.glass && state.rim && state.method && state.garnish && state.specs.every(s => s.solved);
+
+  if(done){
+    progress.completed[drink.name] = true;
+    saveProgress();
+    buildDrinkList();
+    drinkSelect.value = String(currentIndex);
+    completionToast.classList.add('visible');
+  }else{
+    delete progress.completed[drink.name];
+    saveProgress();
+    completionToast.classList.remove('visible');
+  }
+}
+
+function goToIndex(index){
+  currentIndex = (index + drinks.length) % drinks.length;
+  render();
+}
+
+function goToRandom(){
+  let next = currentIndex;
+  if(drinks.length < 2){
+    render();
+    return;
+  }
+  while(next === currentIndex){
+    next = Math.floor(Math.random() * drinks.length);
+  }
+  goToIndex(next);
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+drinkSelect.addEventListener('change', (e) => {
+  currentIndex = Number(e.target.value);
+  render();
+});
+prevButton.addEventListener('click', () => goToIndex(currentIndex - 1));
+nextButton.addEventListener('click', () => goToIndex(currentIndex + 1));
+randomButton.addEventListener('click', goToRandom);
+toastNext.addEventListener('click', () => goToIndex(currentIndex + 1));
+toastRandom.addEventListener('click', goToRandom);
+
+render();
+</script>
+</body>
+</html>
